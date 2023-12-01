@@ -1,0 +1,50 @@
+Certainly! Below is a paraphrased version of the provided information, with a technical tone:
+
+**User Registration API (register_user):**
+This API facilitates the registration of a new user. It accepts a POST request containing the user's name, phone number, optional email, and password in the request body. The UserSerializer validates the request data and creates a new user. Django's token-based authentication generates a token for the new user, included in the response for subsequent authentication.
+
+- **Endpoint:** `/api/register/`
+- **Method:** POST
+- **Request:** JSON with name, phone_number, email, password.
+- **Response:** JSON with user details or error message.
+  
+*Note:*
+- `phone_number` serves as the unique username.
+- Passwords are stored as hashed values in the user table.
+- Token value is included in the response for demonstration purposes.
+
+**User Login API (login_user):**
+This API enables user login. A POST request with the user's phone number and password is required. The view verifies the existence of the user and the correctness of the password. Upon successful login, a token is created or retrieved for the user and included in the response.
+
+- **Endpoint:** `/api/login/`
+- **Method:** POST
+- **Request:** JSON with username and password.
+- **Response:** JSON with authentication token or error message.
+
+*Note:*
+- Token is included in the response to demonstrate functionality.
+- Option to send the token in cookies is available, uncomment to activate.
+
+**Mark as Spam API (mark_as_spam):**
+This API allows a logged-in user to mark a phone number as spam. A POST request with the phone number in the request body is required. The SpamNumberSerializer validates the request, ensuring the user hasn't marked the number as spam before. If not, it marks the number as spam and updates the spam reports count.
+
+- **Endpoint:** `/api/mark-as-spam/`
+- **Method:** POST
+- **Request:** JSON with phone_number, user.
+- **Response:** JSON confirmation or error message.
+
+*Note:*
+- A user can mark a phone number as spam only once.
+- Spam likelihood is calculated as total spams on `phone_number` divided by the total number of registered users.
+
+**Search API (search):**
+This API allows a logged-in user to search for a person by name or phone number. A GET request with the search query as a query parameter is accepted. The SearchSerializer validates the search query, performing a case-insensitive search for names. If the query is a phone number, it returns the user or contacts; if a name, it returns users and contacts with that name. The response includes the spam likelihood for each phone number.
+
+- **Endpoint:** `/api/search/`
+- **Method:** GET
+- **Request:** JSON with query.
+- **Response:** Response.
+
+*Note:*
+- Phone numbers should only contain digits Even if you send phonenumber with strings proper error handling to throw error.
+- The code is written with production-level considerations, setting `DEBUG = False`.
